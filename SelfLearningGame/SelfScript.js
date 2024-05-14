@@ -76,13 +76,39 @@ var heroAngle = 0;
     constructor() {
       this.canvas = document.getElementById("main");
       this.ctx = this.canvas.getContext("2d");
+
+      this.damselImage = new Image();
+      this.damselImage.src = '../img/hospital.png';
+
+      this.heroImage = new Image();
+      this.heroImage.src = '../img/car.png';
+
+      this.villainImage = new Image();
+      this.villainImage.src = '../img/building.png';
+
+      this.damselImage = new Image();
+      this.damselImage.onload = () => {
+        this.heroImage = new Image();
+        this.heroImage.onload = () => {
+          this.villainImage = new Image();
+          this.villainImage.onload = () => {
+            this.reset(); // Une fois que toutes les images sont chargées, initialisez le jeu
+          };
+          this.villainImage.src = '../img/building.png';
+        };
+        this.heroImage.src = '../img/car.png';
+      };
+      this.damselImage.src = '../img/hospital.png';
+
+      this.hero = [0,0];
+      this.damsel = [4,4];
+      this.villains = [[2,1], [4,2], [1,2], [3,4], [1,5], [5,0]];
+
       this.reset();
     }
 
     reset() {
       this.hero = [0,0];
-      this.damsel = [4,4];
-      this.villains = [[2,1], [4,2], [1,2], [3,4], [1,5], [5,0]];
       this.moveCount = 0;
       this.draw();
     }
@@ -135,39 +161,21 @@ var heroAngle = 0;
       var ctx = this.ctx;
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       
-      // Draw Damsel
-      var self = this;
-      var damselImage = new Image();
-      damselImage.src = '../img/hospital.png';
-        
-      damselImage.onload = function() {
-          ctx.drawImage(damselImage, self.damsel[0] * 100, self.damsel[1] * 100, 100, 100);
-        };
-
-      // Draw Hero
-      var heroImage = new Image();
-      heroImage.src = '../img/car.png';
-      var self = this;
-      heroImage.onload = function() {
-        ctx.save(); 
-        ctx.translate(self.hero[0] * 100 + 50, self.hero[1] * 100 + 50); 
-        ctx.rotate(heroAngle * Math.PI / 180);
-        ctx.drawImage(heroImage, -50, -50, 100, 100); 
-        ctx.restore(); 
-      };
+      // Dessiner la Damsel
+      ctx.drawImage(this.damselImage, this.damsel[0] * 100, this.damsel[1] * 100, 100, 100);
+  
+      // Dessiner le Hero
+      ctx.save(); 
+      ctx.translate(this.hero[0] * 100 + 50, this.hero[1] * 100 + 50); 
+      ctx.rotate(heroAngle * Math.PI / 180);
+      ctx.drawImage(this.heroImage, -50, -50, 100, 100); 
+      ctx.restore(); 
       
-      // Draw Villains
-      this.villains.forEach(function (villain) {
-        var villainsImage = new Image();
-        villainsImage.src = '../img/building.png';
-        
-        villainsImage.onload = function() {
-          ctx.drawImage(villainsImage, villain[0] * 100, villain[1] * 100, 100, 100);
-        };
+      // Dessiner les Vilains
+      this.villains.forEach((villain) => {
+        ctx.drawImage(this.villainImage, villain[0] * 100, villain[1] * 100, 100, 100);
       });
     }
-    
-    
     
   }
 
