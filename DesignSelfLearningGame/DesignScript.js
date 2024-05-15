@@ -73,8 +73,6 @@ var heroAngle = 0;
 
 
 
-
-
 class Game {
     constructor(hero, damsels, villains) {
       this.canvas = document.getElementById("main");
@@ -188,12 +186,6 @@ class Game {
 
 
   
-
-
-
-
-
-
   class QNetwork {
     constructor(actions, states) {
       this.initArr(actions, states);
@@ -316,6 +308,9 @@ class Game {
     var editButton = $('#edit');
     editButton.prop('disabled', true); 
 
+    var startButton = $('#start');
+    startButton.prop('disabled', false); 
+
     $('#main').click(function(e) {
         if (!isPaused) return;
 
@@ -349,12 +344,14 @@ class Game {
         }
         
         editButton.prop('disabled', false);
+        startButton.prop('disabled', true);
         game.draw();
     });
 
     $('#edit').click(function() {
         game = new Game(game.hero, game.damsels, game.villains);
         editButton.prop('disabled', true);
+        startButton.prop('disabled', false); 
     });
 
     $('#start').click(function() {
