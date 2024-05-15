@@ -1,5 +1,6 @@
 var isPaused = true;
 var heroAngle = 0;
+var heroDirection = "left";
 
 
   function togglePause() {
@@ -77,11 +78,21 @@ var heroAngle = 0;
       this.canvas = document.getElementById("main");
       this.ctx = this.canvas.getContext("2d");
 
+      this.hero_u = new Image();
+      this.hero_u.src = '../img/ambulance/ambulance_u.png';
+      this.hero_d = new Image();
+      this.hero_d.src = '../img/ambulance/ambulance_d.png';
+      this.hero_r = new Image();
+      this.hero_r.src = '../img/ambulance/ambulance_r.png';
+      this.hero_l = new Image();
+      this.hero_l.src = '../img/ambulance/ambulance_l.png';
+
+
       this.damselImage = new Image();
       this.damselImage.src = '../img/hospital.png';
 
-      this.heroImage = new Image();
-      this.heroImage.src = '../img/car.png';
+      // this.heroImage = new Image();
+      // this.heroImage.src = '../img/car.png';
 
       this.villainImage = new Image();
       this.villainImage.src = '../img/building.png';
@@ -140,18 +151,22 @@ var heroAngle = 0;
         case 'u':
           this.hero[1] = this.hero[1] - 1;
           heroAngle = 180; 
+          heroDirection = "up";
           break;
         case 'd':
           this.hero[1] = this.hero[1] + 1;
           heroAngle = 0; 
+          heroDirection = "down";
           break;
         case 'l':
           this.hero[0] = this.hero[0] - 1;
           heroAngle = 90; 
+          heroDirection = "left";
           break;
         case 'r':
           this.hero[0] = this.hero[0] + 1;
           heroAngle = -90; 
+          heroDirection = "right";
           break;
       }
       this.moveCount = this.moveCount + 1;
@@ -163,19 +178,29 @@ var heroAngle = 0;
       
       // Dessiner la Damsel
       ctx.drawImage(this.damselImage, this.damsel[0] * 100, this.damsel[1] * 100, 100, 100);
-  
+    
       // Dessiner le Hero
-      ctx.save(); 
-      ctx.translate(this.hero[0] * 100 + 50, this.hero[1] * 100 + 50); 
-      ctx.rotate(heroAngle * Math.PI / 180);
-      ctx.drawImage(this.heroImage, -50, -50, 100, 100); 
-      ctx.restore(); 
-      
+      switch (heroDirection) {
+        case "up":
+          ctx.drawImage(this.hero_u, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
+          break;
+        case "down":
+          ctx.drawImage(this.hero_d, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
+          break;
+        case "left":
+          ctx.drawImage(this.hero_l, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
+          break;
+        case "right":
+          ctx.drawImage(this.hero_r, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
+          break;
+      }
+    
       // Dessiner les Vilains
       this.villains.forEach((villain) => {
         ctx.drawImage(this.villainImage, villain[0] * 100, villain[1] * 100, 100, 100);
       });
     }
+    
     
   }
 
