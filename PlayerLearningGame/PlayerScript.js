@@ -335,16 +335,16 @@ var heroDirection = "left";
         // Détermine la direction en fonction de la touche enfoncée
         switch(key) {
             case 37: // Touche gauche
-                move = 'l';
-                heroDirection = "left";
+                move = 'r';
+                heroDirection = "right";
                 break;
             case 38: // Touche haut
                 move = 'u';
                 heroDirection = "up";
                 break;
             case 39: // Touche droite
-                move = 'r';
-                heroDirection = "right";
+                move = 'l';
+                heroDirection = "left";
                 break;
             case 40: // Touche bas
                 move = 'd';
