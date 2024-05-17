@@ -1,5 +1,5 @@
 var isPaused = true;
-var heroAngle = 0;
+var heroDirection = "left";
 
   function togglePause() {
     isPaused = !isPaused;
@@ -77,18 +77,28 @@ class Game {
     constructor(hero, damsels, villains) {
       this.canvas = document.getElementById("main");
       this.ctx = this.canvas.getContext("2d");
-      this.initialHero = hero || [0, 0];
-      this.initialDamsels = damsels || [[0, 5], [4, 4]];
-      this.initialVillains = villains || [[2, 1], [4, 2], [1, 2], [3, 4], [1, 5], [5, 0]];
+      this.initialHero = hero || [4, 4];
+      this.initialDamsels = damsels || [[5, 5]];
+      this.initialVillains = villains || [];
+
+      this.hero_u = new Image();
+      this.hero_u.src = '../img/ambulance/ambulance_u.png';
+      this.hero_d = new Image();
+      this.hero_d.src = '../img/ambulance/ambulance_d.png';
+      this.hero_r = new Image();
+      this.hero_r.src = '../img/ambulance/ambulance_r.png';
+      this.hero_l = new Image();
+      this.hero_l.src = '../img/ambulance/ambulance_l.png';
+
 
       this.damselImage = new Image();
       this.damselImage.src = '../img/hospital.png';
 
-      this.heroImage = new Image();
-      this.heroImage.src = '../img/car.png';
-
       this.villainImage = new Image();
       this.villainImage.src = '../img/building.png';
+
+      this.roadImage = new Image();
+      this.roadImage.src = '../img/road/road.png';
 
       this.damselImage = new Image();
       this.damselImage.onload = () => {
@@ -96,17 +106,41 @@ class Game {
         this.heroImage.onload = () => {
           this.villainImage = new Image();
           this.villainImage.onload = () => {
-            this.reset(); // Une fois que toutes les images sont chargées, initialisez le jeu
+            this.roadImage = new Image();
+            this.roadImage.onload = () => {
+              this.reset();
+            };
+            this.roadImage.src = '../img/road/road.png';
           };
           this.villainImage.src = '../img/building.png';
         };
-        this.heroImage.src = '../img/car.png';
+        this.heroImage.src = '../img/hero.png';
       };
       this.damselImage.src = '../img/hospital.png';
 
+      this.map = this.createMap(this.initialHero,this.initialDamsels,this.initialVillains);
       this.reset();
     }
   
+    createMap(hero, damsel, villains) {
+      var map = [];
+      for (var i = 0; i < 6; i++) {
+          map.push(Array(6).fill('-'));
+      }
+  
+      map[hero[0]][hero[1]] = 'H';
+  
+      for (var i = 0; i < damsel.length; i++) {
+        map[damsel[i][0]][damsel[i][1]] = 'D';
+    }
+
+      for (var i = 0; i < villains.length; i++) {
+          map[villains[i][0]][villains[i][1]] = 'V';
+      }
+  
+      return map;
+    }
+
     reset() {
       this.hero = [...this.initialHero];
       this.damsels = this.initialDamsels.map(damsel => [...damsel]);
@@ -134,6 +168,7 @@ class Game {
       } else {
         reward = -1;
       }
+      this.map = this.createMap(this.hero,this.damsels,this.villains);
       return reward;
     }
   
@@ -141,19 +176,19 @@ class Game {
       switch (dir) {
         case 'u':
           this.hero[1] = this.hero[1] - 1;
-          heroAngle = 180; 
+          heroDirection = "up";
           break;
         case 'd':
           this.hero[1] = this.hero[1] + 1;
-          heroAngle = 0; 
+          heroDirection = "down";
           break;
         case 'l':
           this.hero[0] = this.hero[0] - 1;
-          heroAngle = 90; 
+          heroDirection = "left";
           break;
         case 'r':
           this.hero[0] = this.hero[0] + 1;
-          heroAngle = -90; 
+          heroDirection = "right";
           break;
       }
       this.moveCount = this.moveCount + 1;
@@ -161,26 +196,52 @@ class Game {
   
     draw() {
       var ctx = this.ctx;
-      var self = this;
-
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-      // Draw Damsels
-      this.damsels.forEach(function(damsel) {
-          ctx.drawImage(self.damselImage, damsel[0] * 100, damsel[1] * 100, 100, 100);
-      });
-
-      // Draw Hero
-      ctx.save();
-      ctx.translate(self.hero[0] * 100 + 50, self.hero[1] * 100 + 50);
-      ctx.rotate(heroAngle * Math.PI / 180);
-      ctx.drawImage(self.heroImage, -50, -50, 100, 100);
-      ctx.restore();
-
-      // Draw Villains
-      this.villains.forEach(function(villain) {
-          ctx.drawImage(self.villainImage, villain[0] * 100, villain[1] * 100, 100, 100);
-      });
+      var isoOffsetX = 250;
+      var isoOffsetY = 0;
+  
+      // Dessiner la carte
+      for (var i = 0; i < this.map.length; i++) {
+          for (var j = 0; j < this.map[i].length; j++) {
+              var x = (j - i) * 50 + isoOffsetX; // Coordonnée X de l'image
+              var y = (j + i) * 37 + isoOffsetY; // Coordonnée Y de l'image
+              var element = this.map[i][j]; // Récupérer l'élément de la carte à ces coordonnées
+  
+              // Dessiner la route
+              ctx.drawImage(this.roadImage, x, y, 100, 75);
+  
+              // Dessiner les éléments supplémentaires
+              switch (element) {
+                  case 'H': // Héros
+                      // Dessiner le héros en fonction de sa direction
+                      switch (heroDirection) {
+                          case "up":
+                              ctx.drawImage(this.hero_u, x+30, y+15, 40, 40);
+                              break;
+                          case "down":
+                              ctx.drawImage(this.hero_d, x+30, y+15, 40, 40);
+                              break;
+                          case "left":
+                              ctx.drawImage(this.hero_l, x+30, y+15, 40, 40);
+                              break;
+                          case "right":
+                              ctx.drawImage(this.hero_r, x+30, y+15, 40, 40);
+                              break;
+                      }
+                      break;
+                  case 'D': // Demoiselle
+                      ctx.drawImage(this.damselImage, x+20, y-30, 75, 90);
+                      break;
+                  case 'V': // Vilain
+                      ctx.drawImage(this.villainImage, x+20, y-30, 75, 90);
+                      break;
+                  default:
+                      // Autre cas
+                      break;
+              }
+          }
+      }
   }
 }
 
@@ -225,7 +286,6 @@ class Game {
     }
 
     giveReward(reward, state, prevState, action) {
-      console.log([reward, state, prevState, action])
       //New Q value = Current Q value + lr * [Reward + discount_rate * (highest Q value between possible actions from the new state s’ ) — Current Q value ]
       var maxArr = this.qArr[state];
       var maxQ = Math.max.apply(Math, maxArr);
@@ -306,47 +366,72 @@ class Game {
 
   $(document).ready(function() {
     var editButton = $('#edit');
-    editButton.prop('disabled', true); 
+    editButton.prop('disabled', true);
 
     var startButton = $('#start');
     startButton.prop('disabled', false); 
+    
+      for (var i = 0; i < game.map.length; i++) {
+          for (var j = 0; j < game.map[i].length; j++) {
+              var cellId = '#cell_' + i + '_' + j;
+              var element = game.map[i][j];
+              switch (element) {
+                  case 'H':
+                      $(cellId).css('background-color', 'lightblue');
+                      break;
+                  case 'D':
+                      $(cellId).css('background-color', 'green');
+                      break;
+                  case 'V':
+                      $(cellId).css('background-color', 'red');
+                      break;
+                  default:
+                      $(cellId).css('background-color', 'white');
+                      break;
+              }
+          }
+      }
 
-    $('#main').click(function(e) {
-        if (!isPaused) return;
-
-        var canvas = document.getElementById('main');
-        var rect = canvas.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-
-        var col = Math.floor(x / 100);
-        var row = Math.floor(y / 100);
-
-        var selectedType = $('input[name="case"]:checked').val();
-        switch (selectedType) {
-            case 'damsel':
-                game.damsels.push([col, row]);
-                break;
-            case 'villain':
-                game.villains.push([col, row]);
-                break;
-            case 'hero':
-                game.hero = [col, row];
-                break;
-            case 'empty':
+    $('.cell').click(function() {
+      var cellId = $(this).attr('id');
+      var coordinates = cellId.split('_').slice(1).map(Number);
+      var col = coordinates[0];
+      var row = coordinates[1];
+  
+      var selectedType = $('input[name="case"]:checked').val();
+  
+      switch (selectedType) {
+          case 'damsel':
+              game.damsels.push([col, row]);
+              $(this).css('background-color', 'green');
+              break;
+          case 'villain':
+              game.villains.push([col, row]);
+              $(this).css('background-color', 'red');
+              break;
+          case 'hero':
+              game.hero = [col, row];
+              $(this).css('background-color', 'lightblue');
+              break;
+          case 'empty':
               game.damsels = game.damsels.filter(function(coord) {
-                return !(coord[0] === col && coord[1] === row);
+                  return !(coord[0] === col && coord[1] === row);
               });
               game.villains = game.villains.filter(function(coord) {
                   return !(coord[0] === col && coord[1] === row);
               });
+              $(this).css('background-color', 'white');
               break;
-        }
-        
-        editButton.prop('disabled', false);
-        startButton.prop('disabled', true);
-        game.draw();
-    });
+      }
+      console.log("Coordonnées de la case : ", col, row);
+      console.log("Type sélectionné : ", selectedType);
+  
+      editButton.prop('disabled', false);
+      startButton.prop('disabled', true);
+      game.map = game.createMap(game.hero, game.damsels, game.villains);
+      game.draw();
+  });
+  
 
     $('#edit').click(function() {
         game = new Game(game.hero, game.damsels, game.villains);

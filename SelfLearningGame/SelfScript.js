@@ -91,11 +91,11 @@ var heroDirection = "left";
       this.damselImage = new Image();
       this.damselImage.src = '../img/hospital.png';
 
-      // this.heroImage = new Image();
-      // this.heroImage.src = '../img/car.png';
-
       this.villainImage = new Image();
       this.villainImage.src = '../img/building.png';
+
+      this.roadImage = new Image();
+      this.roadImage.src = '../img/road/road.png';
 
       this.damselImage = new Image();
       this.damselImage.onload = () => {
@@ -103,19 +103,40 @@ var heroDirection = "left";
         this.heroImage.onload = () => {
           this.villainImage = new Image();
           this.villainImage.onload = () => {
-            this.reset(); // Une fois que toutes les images sont chargées, initialisez le jeu
+            this.roadImage = new Image();
+            this.roadImage.onload = () => {
+              this.reset();
+            };
+            this.roadImage.src = '../img/road/road.png';
           };
           this.villainImage.src = '../img/building.png';
         };
-        this.heroImage.src = '../img/car.png';
+        this.heroImage.src = '../img/hero.png';
       };
       this.damselImage.src = '../img/hospital.png';
 
       this.hero = [0,0];
       this.damsel = [4,4];
       this.villains = [[2,1], [4,2], [1,2], [3,4], [1,5], [5,0]];
-
+      this.map = this.createMap(this.hero,this.damsel,this.villains);
       this.reset();
+    }
+
+    createMap(hero, damsel, villains) {
+      var map = [];
+      for (var i = 0; i < 6; i++) {
+          map.push(Array(6).fill('-'));
+      }
+  
+      map[hero[0]][hero[1]] = 'H';
+  
+      map[damsel[0]][damsel[1]] = 'D';
+  
+      for (var i = 0; i < villains.length; i++) {
+          map[villains[i][0]][villains[i][1]] = 'V';
+      }
+  
+      return map;
     }
 
     reset() {
@@ -143,6 +164,7 @@ var heroDirection = "left";
       } else {
         reward = -1;
       }
+      this.map = this.createMap(this.hero,this.damsel,this.villains);
       return reward;
     }
 
@@ -150,22 +172,18 @@ var heroDirection = "left";
       switch (dir) {
         case 'u':
           this.hero[1] = this.hero[1] - 1;
-          heroAngle = 180; 
           heroDirection = "up";
           break;
         case 'd':
           this.hero[1] = this.hero[1] + 1;
-          heroAngle = 0; 
           heroDirection = "down";
           break;
         case 'l':
           this.hero[0] = this.hero[0] - 1;
-          heroAngle = 90; 
           heroDirection = "left";
           break;
         case 'r':
           this.hero[0] = this.hero[0] + 1;
-          heroAngle = -90; 
           heroDirection = "right";
           break;
       }
@@ -175,31 +193,55 @@ var heroDirection = "left";
     draw() {
       var ctx = this.ctx;
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      
-      // Dessiner la Damsel
-      ctx.drawImage(this.damselImage, this.damsel[0] * 100, this.damsel[1] * 100, 100, 100);
-    
-      // Dessiner le Hero
-      switch (heroDirection) {
-        case "up":
-          ctx.drawImage(this.hero_u, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
-          break;
-        case "down":
-          ctx.drawImage(this.hero_d, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
-          break;
-        case "left":
-          ctx.drawImage(this.hero_l, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
-          break;
-        case "right":
-          ctx.drawImage(this.hero_r, this.hero[0] * 100, this.hero[1] * 100, 100, 100);
-          break;
+
+      var isoOffsetX = 250;
+      var isoOffsetY = 0;
+  
+      // Dessiner la carte
+      for (var i = 0; i < this.map.length; i++) {
+          for (var j = 0; j < this.map[i].length; j++) {
+              var x = (j - i) * 50 + isoOffsetX; // Coordonnée X de l'image
+              var y = (j + i) * 37 + isoOffsetY; // Coordonnée Y de l'image
+              var element = this.map[i][j]; // Récupérer l'élément de la carte à ces coordonnées
+  
+              // Dessiner la route
+              ctx.drawImage(this.roadImage, x, y, 100, 75);
+  
+              // Dessiner les éléments supplémentaires
+              switch (element) {
+                  case 'H': // Héros
+                      // Dessiner le héros en fonction de sa direction
+                      switch (heroDirection) {
+                          case "up":
+                              ctx.drawImage(this.hero_u, x+30, y+15, 40, 40);
+                              break;
+                          case "down":
+                              ctx.drawImage(this.hero_d, x+30, y+15, 40, 40);
+                              break;
+                          case "left":
+                              ctx.drawImage(this.hero_l, x+30, y+15, 40, 40);
+                              break;
+                          case "right":
+                              ctx.drawImage(this.hero_r, x+30, y+15, 40, 40);
+                              break;
+                      }
+                      break;
+                  case 'D': // Demoiselle
+                      ctx.drawImage(this.damselImage, x+20, y-30, 75, 90);
+                      break;
+                  case 'V': // Vilain
+                      ctx.drawImage(this.villainImage, x+20, y-30, 75, 90);
+                      break;
+                  default:
+                      // Autre cas
+                      break;
+              }
+          }
       }
+  }
+  
+  
     
-      // Dessiner les Vilains
-      this.villains.forEach((villain) => {
-        ctx.drawImage(this.villainImage, villain[0] * 100, villain[1] * 100, 100, 100);
-      });
-    }
     
     
   }

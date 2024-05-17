@@ -24,6 +24,14 @@
             <input type="range" id="speed" name="speed" min="0" max="150" /> <label for="speed">Speed</label>
 
             <canvas id="main" width="600px" height="600px"></canvas>
+        </div>
+
+        <div class="col">
+            <button type="button" id="start">Start</button>
+            <p><strong>Generation: </strong><span id="generation"></span></p>
+            <p><strong>Step: </strong><span id="step"></span></p>
+            <p><strong>Epsilon: </strong><span id="epsilon"></span></p>
+
             <button type="button" id="edit">Edit</button>
 
             <div class="row">
@@ -32,13 +40,10 @@
                 <input type="radio"  name="case" value="hero"/><label for="hero"> Ambulance</label>  
                 <input type="radio"  name="case" value="empty"/><label for="empty"> empty</label>  
             </div>
-        </div>
 
-        <div class="col">
-            <button type="button" id="start">Start</button>
-            <p><strong>Generation: </strong><span id="generation"></span></p>
-            <p><strong>Step: </strong><span id="step"></span></p>
-            <p><strong>Epsilon: </strong><span id="epsilon"></span></p>
+            <div class="row">
+                <table id="gameGrid"><tr><td id="cell_0_0" class="cell"></td><td id="cell_0_1" class="cell"></td><td id="cell_0_2" class="cell"></td><td id="cell_0_3" class="cell"></td><td id="cell_0_4" class="cell"></td><td id="cell_0_5" class="cell"></td></tr><tr><td id="cell_1_0" class="cell"></td><td id="cell_1_1" class="cell"></td><td id="cell_1_2" class="cell"></td><td id="cell_1_3" class="cell"></td><td id="cell_1_4" class="cell"></td><td id="cell_1_5" class="cell"></td></tr><tr><td id="cell_2_0" class="cell"></td><td id="cell_2_1" class="cell"></td><td id="cell_2_2" class="cell"></td><td id="cell_2_3" class="cell"></td><td id="cell_2_4" class="cell"></td><td id="cell_2_5" class="cell"></td></tr><tr><td id="cell_3_0" class="cell"></td><td id="cell_3_1" class="cell"></td><td id="cell_3_2" class="cell"></td><td id="cell_3_3" class="cell"></td><td id="cell_3_4" class="cell"></td><td id="cell_3_5" class="cell"></td></tr><tr><td id="cell_4_0" class="cell"></td><td id="cell_4_1" class="cell"></td><td id="cell_4_2" class="cell"></td><td id="cell_4_3" class="cell"></td><td id="cell_4_4" class="cell"></td><td id="cell_4_5" class="cell"></td></tr><tr><td id="cell_5_0" class="cell"></td><td id="cell_5_1" class="cell"></td><td id="cell_5_2" class="cell"></td><td id="cell_5_3" class="cell"></td><td id="cell_5_4" class="cell"></td><td id="cell_5_5" class="cell"></td></tr></table>
+            </div>
         </div>
 
         <div class="col">
