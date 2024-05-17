@@ -105,7 +105,7 @@ var heroDirection = "left";
           this.villainImage.onload = () => {
             this.roadImage = new Image();
             this.roadImage.onload = () => {
-              this.reset(); // Une fois que toutes les images sont chargées, initialisez le jeu
+              this.reset();
             };
             this.roadImage.src = '../img/road/road.png';
           };
@@ -172,22 +172,18 @@ var heroDirection = "left";
       switch (dir) {
         case 'u':
           this.hero[1] = this.hero[1] - 1;
-          heroAngle = 180; 
           heroDirection = "up";
           break;
         case 'd':
           this.hero[1] = this.hero[1] + 1;
-          heroAngle = 0; 
           heroDirection = "down";
           break;
         case 'l':
           this.hero[0] = this.hero[0] - 1;
-          heroAngle = 90; 
           heroDirection = "left";
           break;
         case 'r':
           this.hero[0] = this.hero[0] + 1;
-          heroAngle = -90; 
           heroDirection = "right";
           break;
       }
