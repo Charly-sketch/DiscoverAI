@@ -114,7 +114,7 @@ class Game {
           };
           this.villainImage.src = '../img/building.png';
         };
-        this.heroImage.src = '../img/car.png';
+        this.heroImage.src = '../img/hero.png';
       };
       this.damselImage.src = '../img/hospital.png';
 
@@ -370,47 +370,68 @@ class Game {
 
     var startButton = $('#start');
     startButton.prop('disabled', false); 
+    
+      for (var i = 0; i < game.map.length; i++) {
+          for (var j = 0; j < game.map[i].length; j++) {
+              var cellId = '#cell_' + i + '_' + j;
+              var element = game.map[i][j];
+              switch (element) {
+                  case 'H':
+                      $(cellId).css('background-color', 'lightblue');
+                      break;
+                  case 'D':
+                      $(cellId).css('background-color', 'green');
+                      break;
+                  case 'V':
+                      $(cellId).css('background-color', 'red');
+                      break;
+                  default:
+                      $(cellId).css('background-color', 'white');
+                      break;
+              }
+          }
+      }
 
-    $('#main').click(function(e) {
-        if (!isPaused) return;
-
-        var canvas = document.getElementById('main');
-        var rect = canvas.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        console.log("x = "+x+" - y = "+y);
-
-        var col = Math.floor((x - 250) / (301 - 260)); // Pour la colonne, utilisez les coordonnées x du coin supérieur droit et du coin supérieur gauche de la case
-        var row = Math.floor((y - 0) / (52 - 7)); // Pour la ligne, utilisez les coordonnées y du coin supérieur gauche et du coin inférieur gauche de la case
-
-        console.log("col = "+ col+" - row = "+row)
-
-        var selectedType = $('input[name="case"]:checked').val();
-        switch (selectedType) {
-            case 'damsel':
-                game.damsels.push([col, row]);
-                break;
-            case 'villain':
-                game.villains.push([col, row]);
-                break;
-            case 'hero':
-                game.hero = [col, row];
-                break;
-            case 'empty':
+    $('.cell').click(function() {
+      var cellId = $(this).attr('id');
+      var coordinates = cellId.split('_').slice(1).map(Number);
+      var col = coordinates[0];
+      var row = coordinates[1];
+  
+      var selectedType = $('input[name="case"]:checked').val();
+  
+      switch (selectedType) {
+          case 'damsel':
+              game.damsels.push([col, row]);
+              $(this).css('background-color', 'green');
+              break;
+          case 'villain':
+              game.villains.push([col, row]);
+              $(this).css('background-color', 'red');
+              break;
+          case 'hero':
+              game.hero = [col, row];
+              $(this).css('background-color', 'lightblue');
+              break;
+          case 'empty':
               game.damsels = game.damsels.filter(function(coord) {
-                return !(coord[0] === col && coord[1] === row);
+                  return !(coord[0] === col && coord[1] === row);
               });
               game.villains = game.villains.filter(function(coord) {
                   return !(coord[0] === col && coord[1] === row);
               });
+              $(this).css('background-color', 'white');
               break;
-        }
-        
-        editButton.prop('disabled', false);
-        startButton.prop('disabled', true);
-        game.map = game.createMap(game.hero, game.damsels, game.villains);
-        game.draw();
-    });
+      }
+      console.log("Coordonnées de la case : ", col, row);
+      console.log("Type sélectionné : ", selectedType);
+  
+      editButton.prop('disabled', false);
+      startButton.prop('disabled', true);
+      game.map = game.createMap(game.hero, game.damsels, game.villains);
+      game.draw();
+  });
+  
 
     $('#edit').click(function() {
         game = new Game(game.hero, game.damsels, game.villains);

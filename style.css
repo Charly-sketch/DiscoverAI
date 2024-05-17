@@ -66,3 +66,8 @@ body {
   .container a {
     text-decoration: none;
   }
+
+  .cell {
+    width: 75px;
+    height: 75px;
+  }

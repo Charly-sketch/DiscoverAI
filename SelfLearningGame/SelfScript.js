@@ -111,7 +111,7 @@ var heroDirection = "left";
           };
           this.villainImage.src = '../img/building.png';
         };
-        this.heroImage.src = '../img/car.png';
+        this.heroImage.src = '../img/hero.png';
       };
       this.damselImage.src = '../img/hospital.png';
 
