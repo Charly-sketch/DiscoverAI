@@ -79,7 +79,7 @@ class Game {
       this.ctx = this.canvas.getContext("2d");
       this.initialHero = hero || [4, 4];
       this.initialDamsels = damsels || [[5, 5]];
-      this.initialVillains = villains || [];
+      this.initialVillains = villains || [[0, 0]];
 
       this.hero_u = new Image();
       this.hero_u.src = '../img/ambulance/ambulance_u.png';
@@ -199,7 +199,7 @@ class Game {
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       var isoOffsetX = 250;
-      var isoOffsetY = 0;
+      var isoOffsetY = 30;
   
       // Dessiner la carte
       for (var i = 0; i < this.map.length; i++) {

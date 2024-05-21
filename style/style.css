@@ -1,6 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f7f7f7; /* Couleur de fond de la page */
+  background-color: #f7f7f7; /* Background color */
   margin: 0;
   padding: 0;
 }
@@ -10,9 +10,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
-.square{
+.square {
   width: 25%;
   height: 60px;
   display: flex;
@@ -20,59 +21,50 @@ body {
   align-items: center;
   text-decoration: none;
   color: white;
-  transition: background-color 0.3s ease; /* Transition fluide pour le changement de couleur au survol */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
 .square:nth-child(1) {
-  background-color: #474747; /* Couleur de fond du premier carré */
+  background-color: #474747; /* Background color of the first square */
 }
+
 .square:nth-child(2) {
-  background-color: #3498db; /* Couleur de fond du premier carré */
+  background-color: #3498db; /* Background color of the second square */
 }
 
 .square:nth-child(3) {
-  background-color: #2ecc71; /* Couleur de fond du deuxième carré */
+  background-color: #2ecc71; /* Background color of the third square */
 }
 
 .square:nth-child(4) {
-  background-color: #e74c3c; /* Couleur de fond du troisième carré */
+  background-color: #e74c3c; /* Background color of the fourth square */
 }
 
 .square:hover {
-  opacity: 0.7; /* Opacité au survol */
-}
-
-#main {
-  width: 600px;
-  height: 600px;
-  background-color: #2F2F2F;
-  border: 1px solid #999;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  opacity: 0.8; /* Opacity on hover */
 }
 
 h1 {
   text-align: center;
   color: #333;
+  margin-top: 20px;
 }
 
 .row {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   margin: 20px;
+  flex-wrap: wrap;
 }
 
 .col {
   flex: 1;
-  margin: 0 10px;
+  margin: 10px;
 }
 
 canvas {
   display: block;
   margin: 0 auto;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 button {
@@ -93,25 +85,48 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #666 ; 
-  color: #ccc; 
+  background-color: #666;
+  color: #ccc;
   cursor: not-allowed;
 }
 
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+label{
+  margin-right: 30px;
+}
+
+
+input[type="range"] {
+  margin: 10px 0;
+}
 
 .row .col:nth-child(2) {
   text-align: center;
 }
 
 table {
+  width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: center;
+}
+
+th {
+  background-color: #f0f0f0;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
 }
 
 #q-table {
@@ -127,13 +142,13 @@ th, td {
 #history {
   display: inline-block;
   height: 600px;
+  max-width: 265px;
   max-height: 600px;
   overflow-y: auto;
   background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
 
 h4 {
   margin-top: 0;
@@ -145,17 +160,29 @@ h5 {
   color: #333;
 }
 
+#gameGrid .cell {
+  width: 50px; 
+  height: 50px; /* Adjust the size to make the cell square */
+  border: 1px solid #ccc; /* Optional: border for the cells */
+  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
   .row {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .col {
-      margin: 10px 0;
+    margin: 10px 0;
   }
 
   canvas {
-      width: 100%;
+    width: 100%;
+  }
+
+  .square {
+    width: 100%;
+    margin: 5px 0;
   }
 }
