@@ -21,9 +21,8 @@
     <div class="row">
 
         <div class="col">
-            <input type="range" id="speed" name="speed" min="0" max="150" /> <label for="speed">Speed</label>
-
             <canvas id="main" width="600px" height="600px"></canvas>
+            <input type="range" id="speed" name="speed" min="0" max="150" /> <label for="speed">Speed</label>
         </div>
 
         <div class="col">
@@ -35,8 +34,10 @@
             <button type="button" id="edit">Edit</button>
 
             <div class="row">
-                <input type="radio" name="case" value="damsel"/><label for="damsel"> Hospital</label>
+                <input type="radio" name="case" value="damsel"/><label for="damsel" > Hospital</label>
                 <input type="radio" name="case" value="villain"/><label for="vilains"> Building</label>
+            </div>
+            <div class="row">
                 <input type="radio"  name="case" value="hero"/><label for="hero"> Ambulance</label>  
                 <input type="radio"  name="case" value="empty"/><label for="empty"> empty</label>  
             </div>

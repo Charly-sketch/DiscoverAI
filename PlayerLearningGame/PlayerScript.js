@@ -200,7 +200,7 @@ var heroDirection = "left";
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       var isoOffsetX = 250;
-      var isoOffsetY = 0;
+      var isoOffsetY = 30;
   
       // Dessiner la carte
       for (var i = 0; i < this.map.length; i++) {
@@ -223,7 +223,7 @@ var heroDirection = "left";
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       var isoOffsetX = 250;
-      var isoOffsetY = 0;
+      var isoOffsetY = 30;
   
       // Dessiner la carte
       for (var i = 0; i < this.map.length; i++) {
