@@ -77,9 +77,9 @@ class Game {
     constructor(hero, damsels, villains) {
       this.canvas = document.getElementById("main");
       this.ctx = this.canvas.getContext("2d");
-      this.initialHero = hero || [4, 4];
+      this.initialHero = hero || [0, 0];
       this.initialDamsels = damsels || [[5, 5]];
-      this.initialVillains = villains || [[0, 0]];
+      this.initialVillains = villains || [[5  , 0],[4,1],[3,2],[2,3],[1,4],[0,5]];
 
       this.hero_u = new Image();
       this.hero_u.src = '../img/ambulance/ambulance_u.png';
@@ -236,9 +236,6 @@ class Game {
                   case 'V': // Vilain
                       ctx.drawImage(this.villainImage, x+20, y-30, 75, 90);
                       break;
-                  default:
-                      // Autre cas
-                      break;
               }
           }
       }
@@ -286,7 +283,6 @@ class Game {
     }
 
     giveReward(reward, state, prevState, action) {
-      //New Q value = Current Q value + lr * [Reward + discount_rate * (highest Q value between possible actions from the new state s’ ) — Current Q value ]
       var maxArr = this.qArr[state];
       var maxQ = Math.max.apply(Math, maxArr);
       var newQ = this.qArr[prevState][action] + this.lr * (reward + this.discount_rate * maxQ) - this.qArr[prevState][action]
@@ -302,7 +298,7 @@ class Game {
   game = new Game
   net = new QNetwork(4, 36)
 
-  var i = 1;                     //  set your counter to 1
+  var i = 1;
   var generation = 1;
   var step = 1;
   var history = [];
@@ -409,10 +405,18 @@ class Game {
               game.villains.push([col, row]);
               $(this).css('background-color', 'red');
               break;
-          case 'hero':
-              game.hero = [col, row];
-              $(this).css('background-color', 'lightblue');
-              break;
+              case 'hero':
+                for (var i = 0; i < game.map.length; i++) {
+                  for (var j = 0; j < game.map[i].length; j++) {
+                    if (game.map[i][j] === 'H') {
+                      game.map[i][j] = '-';
+                      $('#cell_' + i + '_' + j).css('background-color', 'white');
+                    }
+                  }
+                }
+                game.hero = [col, row];
+                $(this).css('background-color', 'lightblue');
+                break;
           case 'empty':
               game.damsels = game.damsels.filter(function(coord) {
                   return !(coord[0] === col && coord[1] === row);

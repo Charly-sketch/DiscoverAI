@@ -162,9 +162,9 @@ h5 {
 
 #gameGrid .cell {
   width: 50px; 
-  height: 50px; /* Adjust the size to make the cell square */
-  border: 1px solid #ccc; /* Optional: border for the cells */
-  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+  height: 50px;
+  border: 1px solid #ccc; 
+  box-sizing: border-box;
 }
 
 /* Responsive */
