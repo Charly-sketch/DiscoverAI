@@ -1,6 +1,34 @@
 var isPaused = true;
 var heroDirection = "left";
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function hashStringToSeed(str) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+      var char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash |= 0;
+  }
+  return hash;
+}
+
+function createRandomGenerator(seed) {
+  var m = 0x80000000;
+  var a = 1103515245;
+  var c = 12345;
+  var state = seed ? seed : Math.floor(Math.random() * (m - 1));
+  return function() {
+      state = (a * state + c) % m;
+      return state / (m - 1);
+  };
+}
   function togglePause() {
     isPaused = !isPaused;
     var buttonText = isPaused ? "Resume" : "Pause";
@@ -79,7 +107,7 @@ class Game {
       this.ctx = this.canvas.getContext("2d");
       this.initialHero = hero || [0, 0];
       this.initialDamsels = damsels || [[5, 5]];
-      this.initialVillains = villains || [[5  , 0],[4,1],[3,2],[2,3],[1,4],[0,5]];
+      this.initialVillains = villains || [[5  , 0],[4,1],[2,3],[1,4],[0,5]];
 
       this.hero_u = new Image();
       this.hero_u.src = '../img/ambulance/ambulance_u.png';
@@ -88,17 +116,11 @@ class Game {
       this.hero_r = new Image();
       this.hero_r.src = '../img/ambulance/ambulance_r.png';
       this.hero_l = new Image();
-      this.hero_l.src = '../img/ambulance/ambulance_l.png';
+      this.hero_l.src = '../img/ambulance/ambulance_l.png'
 
-
-      this.damselImage = new Image();
-      this.damselImage.src = '../img/hospital.png';
-
-      this.villainImage = new Image();
-      this.villainImage.src = '../img/building.png';
-
-      this.roadImage = new Image();
-      this.roadImage.src = '../img/road/road.png';
+      this.damselImageArray = this.getRandomImage("damsel");
+      this.villainImageArray = this.getRandomImage("vilain");
+      this.roadImageArray = this.getRandomImage("empty");
 
       this.damselImage = new Image();
       this.damselImage.onload = () => {
@@ -110,18 +132,38 @@ class Game {
             this.roadImage.onload = () => {
               this.reset();
             };
-            this.roadImage.src = '../img/road/road.png';
+            this.roadImage.src = '../img/road/1.png';
           };
-          this.villainImage.src = '../img/building.png';
+          this.villainImage.src = '../img/building/1.png';
         };
         this.heroImage.src = '../img/hero.png';
       };
-      this.damselImage.src = '../img/hospital.png';
+      this.damselImage.src = '../img/hospital/1.png';
 
       this.map = this.createMap(this.initialHero,this.initialDamsels,this.initialVillains);
       this.reset();
     }
   
+    getRandomImage(type){
+      var images = [];
+      var dossier;
+      var number;
+      switch (type){
+        case "damsel" : dossier = "../img/hospital/"; number = 2; break;
+        case "vilain" : dossier = "../img/building/"; number = 66; break;
+        case "empty" : dossier = "../img/road/"; number = 4; break;
+      }
+
+      while (number>=1){
+        var image = new Image();
+        image.src = dossier + number + ".png";
+        images.push(image);
+        number --;
+      }
+
+      return shuffle(images);
+    }
+
     createMap(hero, damsel, villains) {
       var map = [];
       for (var i = 0; i < 6; i++) {
@@ -197,41 +239,48 @@ class Game {
     draw() {
       var ctx = this.ctx;
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+  
       var isoOffsetX = 250;
       var isoOffsetY = 30;
   
       for (var i = 0; i < this.map.length; i++) {
           for (var j = 0; j < this.map[i].length; j++) {
-              var x = (j - i) * 50 + isoOffsetX; 
-              var y = (j + i) * 37 + isoOffsetY; 
+              var x = (j - i) * 50 + isoOffsetX;
+              var y = (j + i) * 37 + isoOffsetY;
               var element = this.map[i][j];
   
-              ctx.drawImage(this.roadImage, x, y, 100, 75);
+              var seed = hashStringToSeed(i + ',' + j);
+              var random = createRandomGenerator(seed);
+  
+              var roadImageIndex = Math.floor(random() * this.roadImageArray.length);
+              var damselImageIndex = Math.floor(random() * this.damselImageArray.length);
+              var villainImageIndex = Math.floor(random() * this.villainImageArray.length);
+  
+              ctx.drawImage(this.roadImageArray[roadImageIndex], x, y, 100, 75);
   
               switch (element) {
                   case 'H':
                       switch (heroDirection) {
                           case "up":
-                              ctx.drawImage(this.hero_u, x+30, y+15, 40, 40);
+                              ctx.drawImage(this.hero_u, x + 30, y + 15, 40, 40);
                               break;
                           case "down":
-                              ctx.drawImage(this.hero_d, x+30, y+15, 40, 40);
+                              ctx.drawImage(this.hero_d, x + 30, y + 15, 40, 40);
                               break;
                           case "left":
-                              ctx.drawImage(this.hero_l, x+30, y+15, 40, 40);
+                              ctx.drawImage(this.hero_l, x + 30, y + 15, 40, 40);
                               break;
                           case "right":
-                              ctx.drawImage(this.hero_r, x+30, y+15, 40, 40);
+                              ctx.drawImage(this.hero_r, x + 30, y + 15, 40, 40);
                               break;
                       }
                       break;
                   case 'D':
-                      ctx.drawImage(this.damselImage, x+20, y-30, 75, 90);
+                      ctx.drawImage(this.damselImageArray[damselImageIndex], x + 20, y - 30, 75, 90);
                       break;
                   case 'V':
-                      ctx.drawImage(this.villainImage, x+20, y-30, 75, 90);
-                      break;
+                    ctx.drawImage(this.villainImageArray[villainImageIndex], x + 20, y - 15, 75, 75);
+                    break;
               }
           }
       }
