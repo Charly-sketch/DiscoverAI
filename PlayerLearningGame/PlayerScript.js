@@ -371,6 +371,7 @@ function createRandomGenerator(seed) {
   $(document).ready(function() {
     $(document).keydown(function(e) {
         var key = e.which;
+        if (key==37||key==38||key==39||key==40){
         var move;
         switch(key) {
             case 37:
@@ -412,7 +413,7 @@ function createRandomGenerator(seed) {
         $('#step').text(step);
         $('#epsilon').text(net.epsilon);
         e.preventDefault();
-    });
+    }});
 
     game = new Game();
     game.draw();
