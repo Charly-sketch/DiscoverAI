@@ -1,6 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f7f7f7; /* Background color */
+  background-color: #f7f7f7;
   margin: 0;
   padding: 0;
 }
@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .square {
@@ -25,23 +25,23 @@ body {
 }
 
 .square:nth-child(1) {
-  background-color: #474747; /* Background color of the first square */
+  background-color: #474747;
 }
 
 .square:nth-child(2) {
-  background-color: #3498db; /* Background color of the second square */
+  background-color: #3498db;
 }
 
 .square:nth-child(3) {
-  background-color: #2ecc71; /* Background color of the third square */
+  background-color: #2ecc71;
 }
 
 .square:nth-child(4) {
-  background-color: #e74c3c; /* Background color of the fourth square */
+  background-color: #e74c3c;
 }
 
 .square:hover {
-  opacity: 0.8; /* Opacity on hover */
+  opacity: 0.8;
 }
 
 h1 {
@@ -52,7 +52,6 @@ h1 {
 
 .row {
   display: flex;
-  /* justify-content: space-between; */
   margin: 20px;
   flex-wrap: wrap;
 }
@@ -162,12 +161,11 @@ h5 {
 
 #gameGrid .cell {
   width: 50px; 
-  height: 50px; /* Adjust the size to make the cell square */
-  border: 1px solid #ccc; /* Optional: border for the cells */
-  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+  height: 50px;
+  border: 1px solid #ccc; 
+  box-sizing: border-box;
 }
 
-/* Responsive */
 @media only screen and (max-width: 768px) {
   .row {
     flex-direction: column;
