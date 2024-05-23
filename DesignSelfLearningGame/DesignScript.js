@@ -201,20 +201,16 @@ class Game {
       var isoOffsetX = 250;
       var isoOffsetY = 30;
   
-      // Dessiner la carte
       for (var i = 0; i < this.map.length; i++) {
           for (var j = 0; j < this.map[i].length; j++) {
-              var x = (j - i) * 50 + isoOffsetX; // Coordonnée X de l'image
-              var y = (j + i) * 37 + isoOffsetY; // Coordonnée Y de l'image
-              var element = this.map[i][j]; // Récupérer l'élément de la carte à ces coordonnées
+              var x = (j - i) * 50 + isoOffsetX; 
+              var y = (j + i) * 37 + isoOffsetY; 
+              var element = this.map[i][j];
   
-              // Dessiner la route
               ctx.drawImage(this.roadImage, x, y, 100, 75);
   
-              // Dessiner les éléments supplémentaires
               switch (element) {
-                  case 'H': // Héros
-                      // Dessiner le héros en fonction de sa direction
+                  case 'H':
                       switch (heroDirection) {
                           case "up":
                               ctx.drawImage(this.hero_u, x+30, y+15, 40, 40);
@@ -230,10 +226,10 @@ class Game {
                               break;
                       }
                       break;
-                  case 'D': // Demoiselle
+                  case 'D':
                       ctx.drawImage(this.damselImage, x+20, y-30, 75, 90);
                       break;
-                  case 'V': // Vilain
+                  case 'V':
                       ctx.drawImage(this.villainImage, x+20, y-30, 75, 90);
                       break;
               }
@@ -292,9 +288,6 @@ class Game {
 
 
 
-
-
-  // Play the game
   game = new Game
   net = new QNetwork(4, 36)
 
@@ -305,11 +298,10 @@ class Game {
 
   function myLoop () {   
     if (!isPaused) {      
-      var speed = parseInt(document.getElementById('speed').value); // Récupère la valeur de l'élément input
-     setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+      var speed = parseInt(document.getElementById('speed').value);
+     setTimeout(function () {
         state = game.hero[0] * 5 + game.hero[1] + game.hero[0]
         action = net.think(state)
-        // Convert action 
         var move = null;
         switch(action) {
           case 0:
@@ -350,10 +342,10 @@ class Game {
         });
         $('#q-table').html(qOut);
         $('#epsilon').text(net.epsilon);
-        i++;                     //  increment the counter
-        if (i < 10000) {            //  if the counter < 10, call the loop function
-           myLoop();             //  ..  again which will trigger another 
-        }                        //  ..  setTimeout()
+        i++;
+        if (i < 10000) {
+           myLoop();
+        }
      }, 150-speed)
     }
   }

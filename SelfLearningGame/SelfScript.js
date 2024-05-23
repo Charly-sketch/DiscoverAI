@@ -197,20 +197,16 @@ var heroDirection = "left";
       var isoOffsetX = 250;
       var isoOffsetY = 30;
   
-      // Dessiner la carte
       for (var i = 0; i < this.map.length; i++) {
           for (var j = 0; j < this.map[i].length; j++) {
-              var x = (j - i) * 50 + isoOffsetX; // Coordonnée X de l'image
-              var y = (j + i) * 37 + isoOffsetY; // Coordonnée Y de l'image
-              var element = this.map[i][j]; // Récupérer l'élément de la carte à ces coordonnées
+              var x = (j - i) * 50 + isoOffsetX;
+              var y = (j + i) * 37 + isoOffsetY;
+              var element = this.map[i][j];
   
-              // Dessiner la route
               ctx.drawImage(this.roadImage, x, y, 100, 75);
   
-              // Dessiner les éléments supplémentaires
               switch (element) {
-                  case 'H': // Héros
-                      // Dessiner le héros en fonction de sa direction
+                  case 'H':
                       switch (heroDirection) {
                           case "up":
                               ctx.drawImage(this.hero_u, x+30, y+15, 40, 40);
@@ -226,14 +222,11 @@ var heroDirection = "left";
                               break;
                       }
                       break;
-                  case 'D': // Demoiselle
+                  case 'D':
                       ctx.drawImage(this.damselImage, x+20, y-30, 75, 90);
                       break;
-                  case 'V': // Vilain
+                  case 'V':
                       ctx.drawImage(this.villainImage, x+20, y-30, 75, 90);
-                      break;
-                  default:
-                      // Autre cas
                       break;
               }
           }
@@ -285,8 +278,6 @@ var heroDirection = "left";
     }
 
     giveReward(reward, state, prevState, action) {
-      // console.log([reward, state, prevState, action])
-      //New Q value = Current Q value + lr * [Reward + discount_rate * (highest Q value between possible actions from the new state s’ ) — Current Q value ]
       var maxArr = this.qArr[state];
       var maxQ = Math.max.apply(Math, maxArr);
       var newQ = this.qArr[prevState][action] + this.lr * (reward + this.discount_rate * maxQ) - this.qArr[prevState][action]
@@ -294,11 +285,10 @@ var heroDirection = "left";
     }
   }
 
-  // Play the game
   game = new Game
   net = new QNetwork(4, 36)
 
-  var i = 1;                     //  set your counter to 1
+  var i = 1;
   var generation = 1;
   var step = 1;
   var history = [];
@@ -306,10 +296,9 @@ var heroDirection = "left";
   function myLoop () {   
     if (!isPaused) {     
       var speed = parseInt(document.getElementById('speed').value); 
-     setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+     setTimeout(function () {
         state = game.hero[0] * 5 + game.hero[1] + game.hero[0]
         action = net.think(state)
-        // Convert action 
         var move = null;
         switch(action) {
           case 0:
@@ -352,10 +341,10 @@ var heroDirection = "left";
         });
         $('#q-table').html(qOut);
         $('#epsilon').text(net.epsilon);
-        i++;                     //  increment the counter
-        if (i < 10000) {            //  if the counter < 10, call the loop function
-           myLoop();             //  ..  again which will trigger another 
-        }                        //  ..  setTimeout()
+        i++;
+        if (i < 10000) {
+           myLoop();
+        }
      }, 150-speed)
     }
   }
