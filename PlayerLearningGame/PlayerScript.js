@@ -168,6 +168,9 @@ function createRandomGenerator(seed) {
   
         this.heroImage = new Image();
         this.heroImage.src = '../img/hero.png';
+
+        this.exploImage = new Image();
+        this.exploImage.src = '../img/explosion.gif';
   
         this.damselImageArray = this.getRandomImage("damsel");
         this.villainImageArray = this.getRandomImage("vilain");
@@ -414,6 +417,7 @@ function createRandomGenerator(seed) {
   $(document).ready(function() {
     $(document).keydown(function(e) {
         var key = e.which;
+        if (key==37||key==38||key==39||key==40){
         var move;
         switch(key) {
             case 37:
@@ -457,6 +461,7 @@ function createRandomGenerator(seed) {
         $('#step').text(step);
         $('#epsilon').text(net.epsilon);
         e.preventDefault();
+      }
     });
 
     game = new Game();

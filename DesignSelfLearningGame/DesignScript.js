@@ -471,7 +471,7 @@ class Game {
                       $(cellId).css('background-color', 'red');
                       break;
                   default:
-                      $(cellId).css('background-color', 'white');
+                      $(cellId).css('background-color', '#ddddd6');
                       break;
               }
           }
@@ -499,7 +499,7 @@ class Game {
                   for (var j = 0; j < game.map[i].length; j++) {
                     if (game.map[i][j] === 'H') {
                       game.map[i][j] = '-';
-                      $('#cell_' + i + '_' + j).css('background-color', 'white');
+                      $('#cell_' + i + '_' + j).css('background-color', '#ddddd6');
                     }
                   }
                 }
@@ -513,7 +513,7 @@ class Game {
               game.villains = game.villains.filter(function(coord) {
                   return !(coord[0] === col && coord[1] === row);
               });
-              $(this).css('background-color', 'white');
+              $(this).css('background-color', '#ddddd6');
               break;
       }
       console.log("Coordonnées de la case : ", col, row);

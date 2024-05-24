@@ -21,23 +21,24 @@ body {
   align-items: center;
   text-decoration: none;
   color: white;
+  font-weight: 1000;
   transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
 .square:nth-child(1) {
-  background-color: #474747;
+  background-color: #F2DD77;
 }
 
 .square:nth-child(2) {
-  background-color: #3498db;
+  background-color: #DD5350;
 }
 
 .square:nth-child(3) {
-  background-color: #2ecc71;
+  background-color: #99D69F;
 }
 
 .square:nth-child(4) {
-  background-color: #e74c3c;
+  background-color: #9FDAF4;
 }
 
 .square:hover {
@@ -84,7 +85,7 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #666;
+  background-color: #5D5B5C;
   color: #ccc;
   cursor: not-allowed;
 }
@@ -151,17 +152,17 @@ tr:hover {
 
 h4 {
   margin-top: 0;
-  color: #333;
+  color: #5D5B5C;
 }
 
 h5 {
   margin-bottom: 5px;
-  color: #333;
+  color: #5D5B5C;
 }
 
 #gameGrid .cell {
-  width: 50px; 
-  height: 50px;
+  /* width: 20px;  */
+  height: 75px;
   border: 1px solid #ccc; 
   box-sizing: border-box;
 }
@@ -183,4 +184,49 @@ h5 {
     width: 100%;
     margin: 5px 0;
   }
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.radio-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.hospital-btn {
+  background-color: green;
+}
+
+.building-btn {
+  background-color: red;
+}
+
+.ambulance-btn {
+  background-color: lightblue;
+}
+
+.empty-btn {
+  background-color: #ddddd6;
+}
+
+input[type="radio"]:checked + .radio-btn {
+  opacity: 0.7;
+  font-weight: 200;
+  border: 2px solid #5D5B5C;
+}
+
+footer {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  background-color: #45a1ff;
+  color: #fff;
 }

@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
+    background-color: #F2DD77;
     margin: 0;
     padding: 0;
   }
@@ -22,20 +22,25 @@ body {
     text-decoration: none;
     color: white;
     border-radius: 10px; 
+    font-weight: 1000;
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   .square:nth-child(1) {
-    background-color: #3498db;
+    background-color: white;
   }
-  
+
   .square:nth-child(2) {
-    background-color: #2ecc71;
+    background-color: #DD5350;
   }
   
   .square:nth-child(3) {
-    background-color: #e74c3c;
+    background-color: #99D69F;
+  }
+  
+  .square:nth-child(4) {
+    background-color: #9FDAF4;
   }
   
   .square:hover {
@@ -70,4 +75,12 @@ body {
   .cell {
     width: 75px;
     height: 75px;
+  }
+
+  footer {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    background-color: #45a1ff;
+    color: #fff;
   }

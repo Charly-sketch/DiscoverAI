@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="menu">
-        <a href="../index.html" class="square"><span>Acceuil</span></a>
+        <a href="../index.html" class="square"><span>Home</span></a>
         <a href="../PlayerLearningGame/PlayerBiolearning.html" class="square"><span>Game Part</span></a>
         <a href="../SelfLearningGame/SelfBiolearning.html" class="square"><span>AI Part</span></a>
         <a href="" class="square"><span>Design Part</span></a>
@@ -35,12 +35,10 @@
             <button type="button" id="edit">Edit</button>
 
             <div class="row">
-                <input type="radio" name="case" value="damsel"/><label for="damsel" > Hospital</label>
-                <input type="radio" name="case" value="villain"/><label for="vilains"> Building</label>
-            </div>
-            <div class="row">
-                <input type="radio"  name="case" value="hero"/><label for="hero"> Ambulance</label>  
-                <input type="radio"  name="case" value="empty"/><label for="empty"> empty</label>  
+                <input type="radio" name="case" id="damsel" value="damsel"/><label for="damsel" class="radio-btn hospital-btn">Hospital</label>
+                <input type="radio" name="case" id="villain" value="villain"/><label for="villain" class="radio-btn building-btn">Building</label>
+                <input type="radio" name="case" id="hero" value="hero"/><label for="hero" class="radio-btn ambulance-btn">Ambulance</label>
+                <input type="radio" name="case" id="empty" value="empty"/><label for="empty" class="radio-btn empty-btn">Empty</label>
             </div>
 
             <div class="row">
@@ -71,5 +69,9 @@
     <div style="width: 100%; margin-top: 150px;">
         <canvas id="history-chart" style="width: 80%; height: 500px;"></canvas>
     </div>
+
+    <footer>
+        <p>Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them.</p>
+      </footer>
 </body>
 </html>
