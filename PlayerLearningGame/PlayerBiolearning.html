@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Game</title>
-    <link rel="stylesheet" href="../style/style.css"> <!-- Inclusion de votre fichier CSS -->
-    <script src="PlayerScript.js" defer></script> <!-- Inclusion de votre fichier JavaScript -->
+    <link rel="stylesheet" href="../style/style.css"> 
+    <script src="PlayerScript.js" defer></script> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="menu">
@@ -43,7 +44,10 @@
                 </div>
             </div>
         </div>
+    </div>
 
+    <div style="width: 100%; margin-top: 150px;">
+        <canvas id="history-chart" style="width: 80%; height: 500px;"></canvas>
     </div>
 </body>
 </html>

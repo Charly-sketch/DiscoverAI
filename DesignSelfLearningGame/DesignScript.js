@@ -1,6 +1,49 @@
 var isPaused = true;
 var heroDirection = "left";
 
+var historyChart;
+var chartData = {
+    labels: [],
+    datasets: [{
+        label: 'Steps per Generation',
+        data: [],
+        backgroundColor: [],
+        borderColor: [],
+        borderWidth: 1
+    }]
+};
+
+function initChart() {
+    var ctx = document.getElementById('history-chart').getContext('2d');
+    historyChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function updateChart(generation, steps, status) {
+    chartData.labels.push(generation);
+    chartData.datasets[0].data.push(steps);
+    if (status === 'Won') {
+        chartData.datasets[0].backgroundColor.push('green');
+        chartData.datasets[0].borderColor.push('green');
+    } else {
+        chartData.datasets[0].backgroundColor.push('red');
+        chartData.datasets[0].borderColor.push('red');
+    }
+    historyChart.update();
+}
+
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -345,64 +388,69 @@ class Game {
   var step = 1;
   var history = [];
 
-  function myLoop () {   
-    if (!isPaused) {      
-      var speed = parseInt(document.getElementById('speed').value);
-     setTimeout(function () {
-        state = game.hero[0] * 5 + game.hero[1] + game.hero[0]
-        action = net.think(state)
-        var move = null;
-        switch(action) {
-          case 0:
-            move = 'u'
-            break;
-          case 1:
-            move = 'd'
-            break;
-          case 2:
-            move = 'l'
-            break;
-          case 3:
-            move = 'r'
-            break;
-        }
-        reward = game.play(move)
-        prevState = state
-        state = game.hero[0] * 5 + game.hero[1] + game.hero[0]
-        net.giveReward(reward, state, prevState, action)
-        if (reward == -100) {
-          history[generation] = {status: 'Lost', steps: step}
-          $('#history').prepend('<tr><td>' + generation + '</td><td>Lost</td><td>'+step+'</td></tr>');
-          generation = generation + 1;
-          step = 1;
-        } else if (reward == 100) {
-          history[generation] = {status: 'Won', steps: step}
-          $('#history').prepend('<tr class="success"><td>' + generation + '</td><td>Won</td><td>'+step+'</td></tr>');
-          generation = generation + 1;
-          step = 1;
-        } else {
-          step = step + 1;
-        }
-        $('#generation').text(generation);
-        $('#step').text(step);
-        var qOut = '';
-        $.each(net.qArr, function() {
-          qOut = qOut + JSON.stringify(this) + '<br>';
-        });
-        $('#q-table').html(qOut);
-        $('#epsilon').text(net.epsilon);
-        i++;
-        if (i < 10000) {
-           myLoop();
-        }
-     }, 150-speed)
+  function myLoop() {   
+    if (!isPaused) {     
+        var speed = parseInt(document.getElementById('speed').value); 
+        setTimeout(function () {
+            state = game.hero[0] * 5 + game.hero[1] + game.hero[0]
+            action = net.think(state)
+            var move = null;
+            switch(action) {
+                case 0:
+                    move = 'u'
+                    break;
+                case 1:
+                    move = 'd'
+                    break;
+                case 2:
+                    move = 'l'
+                    break;
+                case 3:
+                    move = 'r'
+                    break;
+            }
+            reward = game.play(move)
+            prevState = state
+            state = game.hero[0] * 5 + game.hero[1] + game.hero[0]
+            net.giveReward(reward, state, prevState, action)
+
+            if (reward == -100) {
+                history[generation] = {status: 'Lost', steps: step}
+                $('#history').prepend('<tr><td>' + generation + '</td><td>Lost</td><td>'+step+'</td></tr>');
+                updateChart(generation, step, 'Lost'); // Appel de updateChart
+                generation = generation + 1;
+                step = 1;
+            } else if (reward == 100) {
+                history[generation] = {status: 'Won', steps: step}
+                $('#history').prepend('<tr class="success"><td>' + generation + '</td><td>Won</td><td>'+step+'</td></tr>');
+                updateChart(generation, step, 'Won'); // Appel de updateChart
+                generation = generation + 1;
+                step = 1;
+            } else {
+                step = step + 1;
+            }
+
+            $('#generation').text(generation);
+            $('#step').text(step);
+            var qOut = '';
+            $.each(net.qArr, function() {
+                qOut = qOut + JSON.stringify(this) + '<br>';
+            });
+            $('#q-table').html(qOut);
+            $('#epsilon').text(net.epsilon);
+            i++;
+            if (i < 10000) {
+                myLoop();
+            }
+        }, 150-speed)
     }
-  }
+}
 
 
 
   $(document).ready(function() {
     var editButton = $('#edit');
+    initChart();
     editButton.prop('disabled', true);
 
     var startButton = $('#start');

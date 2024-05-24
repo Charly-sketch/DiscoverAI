@@ -2,6 +2,49 @@ var IsReveal = false;
 var game;
 var heroDirection = "left";
 
+var historyChart;
+var chartData = {
+    labels: [],
+    datasets: [{
+        label: 'Steps per Generation',
+        data: [],
+        backgroundColor: [],
+        borderColor: [],
+        borderWidth: 1
+    }]
+};
+
+function initChart() {
+    var ctx = document.getElementById('history-chart').getContext('2d');
+    historyChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function updateChart(generation, steps, status) {
+    chartData.labels.push(generation);
+    chartData.datasets[0].data.push(steps);
+    if (status === 'Won') {
+        chartData.datasets[0].backgroundColor.push('green');
+        chartData.datasets[0].borderColor.push('green');
+    } else {
+        chartData.datasets[0].backgroundColor.push('red');
+        chartData.datasets[0].borderColor.push('red');
+    }
+    historyChart.update();
+}
+
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -398,11 +441,13 @@ function createRandomGenerator(seed) {
         if (reward == -100) {
             history[generation] = {status: 'Lost', steps: step};
             $('#history').prepend('<tr><td>' + generation + '</td><td>Lost</td><td>'+step+'</td></tr>');
+            updateChart(generation, step, 'Lost');
             generation++;
             step = 1;
         } else if (reward == 100) {
             history[generation] = {status: 'Won', steps: step};
             $('#history').prepend('<tr class="success"><td>' + generation + '</td><td>Won</td><td>'+step+'</td></tr>');
+            updateChart(generation, step, 'Won');
             generation++;
             step = 1;
         } else {
@@ -425,4 +470,5 @@ function createRandomGenerator(seed) {
       IsReveal = !IsReveal;
       reveal();
     })
+    initChart();
   })
