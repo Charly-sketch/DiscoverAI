@@ -195,24 +195,24 @@ input[type="radio"] {
   padding: 10px 20px;
   margin: 5px;
   border-radius: 5px;
-  color: #ffffff;
+  color: #4d4d4d;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 
-.hospital-btn {
+.radio-btn:nth-child(2) {
   background-color: green;
 }
 
-.building-btn {
+.radio-btn:nth-child(4) {
   background-color: red;
 }
 
-.ambulance-btn {
+.radio-btn:nth-child(6) {
   background-color: lightblue;
 }
 
-.empty-btn {
+.radio-btn:nth-child(8) {
   background-color: #ddddd6;
 }
 
